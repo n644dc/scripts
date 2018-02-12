@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ESSID='SerenityTemple_EXT-2.4'
-PASSW='clean&sober'
+ESSID='your_ssid'
+PASSW='yourpasswd'
 IFACE=wlo1
 
 # Install Tools
