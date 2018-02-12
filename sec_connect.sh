@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ESSID='your_ssid'
-PASSW='yourpasswd'
+PASSWD='yourpasswd'
 IFACE=wlo1
 
 # Install Tools
@@ -11,6 +11,8 @@ apt install wpasupplicant openvpn -y
 rfkill unblock wifi
 systemctl stop NetworkManager
 systemctl disable NetworkManager
+dhclient $IFACE -r
+killall wpa_supplicant
 
 # Generate Random MAC
 hexchars="0123456789ABCDEF"
@@ -41,12 +43,15 @@ ifconfig $IFACE up
 
 
 # WPA Setup
-wpa_passphrase $ESSID $PASSWD | tee /etc/wpa_suppliant.conf
+wpa_passphrase "$ESSID" "$PASSWD" | tee /etc/wpa_supplicant.conf
 
 # Connect and put in background
 wpa_supplicant -B -c /etc/wpa_supplicant.conf -i $IFACE
 
+echo 'starting dhcp client'
 dhclient $IFACE
+
+echo 'Done!'
 
 
 
